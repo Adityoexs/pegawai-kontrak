@@ -15,6 +15,7 @@ import { UploadedFile } from '../../models/pegawai.model';
 export class UploadComponent implements OnInit {
   selectedFile?: File;
   files: UploadedFile[] = [];
+  errorMessage = '';
   displayedColumns = ['id', 'fileName', 'filePath', 'uploadDate'];
 
   constructor(private readonly apiService: ApiService) {}
@@ -30,9 +31,15 @@ export class UploadComponent implements OnInit {
 
   upload(): void {
     if (!this.selectedFile) return;
-    this.apiService.uploadFile(this.selectedFile).subscribe(() => {
-      this.selectedFile = undefined;
-      this.loadFiles();
+    this.errorMessage = '';
+    this.apiService.uploadFile(this.selectedFile).subscribe({
+      next: () => {
+        this.selectedFile = undefined;
+        this.loadFiles();
+      },
+      error: () => {
+        this.errorMessage = 'Upload gagal. Periksa format file dan coba lagi.';
+      },
     });
   }
 

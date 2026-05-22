@@ -4,6 +4,9 @@
     <input type="file" accept=".xlsx,.xls" (change)="onFileSelected($event)" />
     <button mat-raised-button color="primary" (click)="upload()" [disabled]="!selectedFile">Upload</button>
   </mat-card-content>
+  @if (errorMessage) {
+  <p class="error">{{ errorMessage }}</p>
+  }
 </mat-card>
 
 <table mat-table [dataSource]="files" class="mat-elevation-z2">

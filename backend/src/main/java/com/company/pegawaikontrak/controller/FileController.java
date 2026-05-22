@@ -6,6 +6,8 @@ import com.company.pegawaikontrak.service.ExcelService;
 import java.io.IOException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,8 +24,14 @@ public class FileController {
     private final ExcelService excelService;
 
     @PostMapping("/upload")
-    public ApiResponse<UploadedFile> upload(@RequestParam("file") MultipartFile file) throws IOException {
-        return new ApiResponse<>(true, "Upload sukses", excelService.uploadAndProcess(file));
+    public ResponseEntity<ApiResponse<UploadedFile>> upload(@RequestParam("file") MultipartFile file) {
+        try {
+            UploadedFile uploaded = excelService.uploadAndProcess(file);
+            return ResponseEntity.ok(new ApiResponse<>(true, "Upload sukses", uploaded));
+        } catch (IOException | IllegalArgumentException ex) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(new ApiResponse<>(false, ex.getMessage(), null));
+        }
     }
 
     @GetMapping
