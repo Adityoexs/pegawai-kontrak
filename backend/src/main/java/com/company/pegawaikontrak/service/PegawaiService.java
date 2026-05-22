@@ -8,17 +8,22 @@ import com.company.pegawaikontrak.entity.Pegawai;
 import com.company.pegawaikontrak.repository.CabangRepository;
 import com.company.pegawaikontrak.repository.JabatanRepository;
 import com.company.pegawaikontrak.repository.PegawaiRepository;
-import java.time.LocalDate;
 import java.util.List;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
-@RequiredArgsConstructor
 public class PegawaiService {
     private final PegawaiRepository pegawaiRepository;
     private final CabangRepository cabangRepository;
     private final JabatanRepository jabatanRepository;
+
+    public PegawaiService(PegawaiRepository pegawaiRepository,
+                          CabangRepository cabangRepository,
+                          JabatanRepository jabatanRepository) {
+        this.pegawaiRepository = pegawaiRepository;
+        this.cabangRepository = cabangRepository;
+        this.jabatanRepository = jabatanRepository;
+    }
 
     public List<Pegawai> findAll() {
         return pegawaiRepository.findAll();
