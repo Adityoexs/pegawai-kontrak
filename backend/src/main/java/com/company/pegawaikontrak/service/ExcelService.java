@@ -13,7 +13,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
-import lombok.RequiredArgsConstructor;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -25,13 +24,17 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
-@RequiredArgsConstructor
 public class ExcelService {
     @Value("${file.upload-dir:./uploads}")
     private String uploadDir;
 
     private final PegawaiService pegawaiService;
     private final UploadedFileRepository uploadedFileRepository;
+
+    public ExcelService(PegawaiService pegawaiService, UploadedFileRepository uploadedFileRepository) {
+        this.pegawaiService = pegawaiService;
+        this.uploadedFileRepository = uploadedFileRepository;
+    }
 
     public UploadedFile uploadAndProcess(MultipartFile file) throws IOException {
         Path uploadPath = Paths.get(uploadDir).toAbsolutePath().normalize();

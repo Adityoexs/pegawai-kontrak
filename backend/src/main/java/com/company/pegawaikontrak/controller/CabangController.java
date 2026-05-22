@@ -4,7 +4,6 @@ import com.company.pegawaikontrak.dto.ApiResponse;
 import com.company.pegawaikontrak.entity.Cabang;
 import com.company.pegawaikontrak.repository.CabangRepository;
 import java.util.List;
-import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,9 +17,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/cabang")
 @CrossOrigin("*")
-@RequiredArgsConstructor
 public class CabangController {
     private final CabangRepository cabangRepository;
+
+    public CabangController(CabangRepository cabangRepository) {
+        this.cabangRepository = cabangRepository;
+    }
 
     @GetMapping
     public ApiResponse<List<Cabang>> findAll() {

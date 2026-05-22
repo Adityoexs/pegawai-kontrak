@@ -5,7 +5,6 @@ import com.company.pegawaikontrak.entity.UploadedFile;
 import com.company.pegawaikontrak.service.ExcelService;
 import java.io.IOException;
 import java.util.List;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -19,9 +18,12 @@ import org.springframework.web.multipart.MultipartFile;
 @RestController
 @RequestMapping("/api/files")
 @CrossOrigin("*")
-@RequiredArgsConstructor
 public class FileController {
     private final ExcelService excelService;
+
+    public FileController(ExcelService excelService) {
+        this.excelService = excelService;
+    }
 
     @PostMapping("/upload")
     public ResponseEntity<ApiResponse<UploadedFile>> upload(@RequestParam("file") MultipartFile file) {
