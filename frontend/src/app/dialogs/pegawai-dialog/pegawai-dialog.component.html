@@ -1,0 +1,52 @@
+<h2 mat-dialog-title>{{ data.isEdit ? 'Edit Pegawai' : 'Tambah Pegawai' }}</h2>
+
+<mat-dialog-content>
+  <form class="dialog-form" [formGroup]="form">
+    <mat-form-field appearance="outline">
+      <mat-label>Kode Pegawai</mat-label>
+      <input matInput formControlName="kodePegawai" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Nama Pegawai</mat-label>
+      <input matInput formControlName="namaPegawai" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Cabang</mat-label>
+      <mat-select formControlName="kodeCabang">
+        @for (item of data.cabang; track item.kodeCabang) {
+        <mat-option [value]="item.kodeCabang">{{ item.namaCabang }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Jabatan</mat-label>
+      <mat-select formControlName="kodeJabatan">
+        @for (item of data.jabatan; track item.kodeJabatan) {
+        <mat-option [value]="item.kodeJabatan">{{ item.namaJabatan }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Tanggal Mulai</mat-label>
+      <input matInput [matDatepicker]="mulaiPicker" formControlName="tanggalMulaiKontrak" />
+      <mat-datepicker-toggle matIconSuffix [for]="mulaiPicker"></mat-datepicker-toggle>
+      <mat-datepicker #mulaiPicker></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Tanggal Habis</mat-label>
+      <input matInput [matDatepicker]="habisPicker" formControlName="tanggalHabisKontrak" />
+      <mat-datepicker-toggle matIconSuffix [for]="habisPicker"></mat-datepicker-toggle>
+      <mat-datepicker #habisPicker></mat-datepicker>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="close()">Batal</button>
+  <button mat-raised-button color="primary" (click)="save()">Simpan</button>
+</mat-dialog-actions>
