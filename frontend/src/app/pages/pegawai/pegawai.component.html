@@ -1,0 +1,47 @@
+<div class="page-header">
+  <h2>Data Pegawai</h2>
+  <button mat-raised-button color="primary" (click)="add()">Tambah</button>
+</div>
+
+<table mat-table [dataSource]="dataSource" class="mat-elevation-z2">
+  <ng-container matColumnDef="kodePegawai">
+    <th mat-header-cell *matHeaderCellDef>Kode</th>
+    <td mat-cell *matCellDef="let row">{{ row.kodePegawai }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="namaPegawai">
+    <th mat-header-cell *matHeaderCellDef>Nama</th>
+    <td mat-cell *matCellDef="let row">{{ row.namaPegawai }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="cabang">
+    <th mat-header-cell *matHeaderCellDef>Cabang</th>
+    <td mat-cell *matCellDef="let row">{{ row.cabang?.namaCabang }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="jabatan">
+    <th mat-header-cell *matHeaderCellDef>Jabatan</th>
+    <td mat-cell *matCellDef="let row">{{ row.jabatan?.namaJabatan }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="tanggalMulaiKontrak">
+    <th mat-header-cell *matHeaderCellDef>Mulai</th>
+    <td mat-cell *matCellDef="let row">{{ row.tanggalMulaiKontrak }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="tanggalHabisKontrak">
+    <th mat-header-cell *matHeaderCellDef>Habis</th>
+    <td mat-cell *matCellDef="let row">{{ row.tanggalHabisKontrak }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="actions">
+    <th mat-header-cell *matHeaderCellDef>Aksi</th>
+    <td mat-cell *matCellDef="let row">
+      <button mat-button (click)="edit(row)">Edit</button>
+      <button mat-button color="warn" (click)="remove(row)">Hapus</button>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+</table>
