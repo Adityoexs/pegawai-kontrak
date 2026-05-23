@@ -44,7 +44,7 @@ export class UploadDialogComponent {
     this.api.uploadFile(this.selectedFile).subscribe({
       next: () => {
         this.uploading = false;
-        this.snack.open('File berhasil diupload.', 'OK', { duration: 2500 });
+        this.snack.open('File berhasil diunggah.', 'OK', { duration: 2500 });
         this.dialogRef.close(true);
       },
       error: (err) => {

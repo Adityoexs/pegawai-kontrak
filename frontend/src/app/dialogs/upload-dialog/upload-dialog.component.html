@@ -24,6 +24,6 @@
   <button mat-button (click)="dialogRef.close()" [disabled]="uploading">Batal</button>
   <button mat-raised-button class="submit-btn" (click)="upload()" [disabled]="!selectedFile || uploading">
     <mat-spinner *ngIf="uploading" diameter="18"></mat-spinner>
-    <span>{{ uploading ? 'Uploading...' : 'Upload' }}</span>
+    <span>{{ uploading ? 'Mengunggah...' : 'Upload' }}</span>
   </button>
 </mat-dialog-actions>
