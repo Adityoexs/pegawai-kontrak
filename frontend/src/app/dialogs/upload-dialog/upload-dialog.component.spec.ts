@@ -44,7 +44,7 @@ describe('UploadDialogComponent', () => {
     component.upload();
 
     expect(apiSpy.uploadFile).toHaveBeenCalledWith(file);
-    expect(openSpy).toHaveBeenCalledWith('File berhasil diupload!', 'OK', { duration: 3000 });
+    expect(openSpy).toHaveBeenCalledWith('File berhasil diunggah!', 'OK', { duration: 3000 });
     expect(dialogRefSpy.close).toHaveBeenCalledWith(true);
     expect(component.uploading).toBeFalse();
   });
