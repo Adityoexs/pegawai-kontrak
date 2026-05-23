@@ -1,11 +1,11 @@
 <div class="page-header">
   <h2>Data Jabatan</h2>
-  <button mat-raised-button color="primary" (click)="add()">Tambah</button>
+  <button mat-raised-button color="primary" (click)="add()">Tambah Jabatan</button>
 </div>
 
 <table mat-table [dataSource]="dataSource" class="mat-elevation-z2">
   <ng-container matColumnDef="kodeJabatan">
-    <th mat-header-cell *matHeaderCellDef>Kode</th>
+    <th mat-header-cell *matHeaderCellDef>Kode Jabatan</th>
     <td mat-cell *matCellDef="let row">{{ row.kodeJabatan }}</td>
   </ng-container>
 
@@ -16,7 +16,7 @@
 
   <ng-container matColumnDef="actions">
     <th mat-header-cell *matHeaderCellDef>Aksi</th>
-    <td mat-cell *matCellDef="let row">
+    <td mat-cell *matCellDef="let row" class="action-column">
       <button mat-button (click)="edit(row)">Edit</button>
       <button mat-button color="warn" (click)="remove(row)">Hapus</button>
     </td>

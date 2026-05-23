@@ -1,0 +1,26 @@
+<h2 mat-dialog-title>{{ data.isEdit ? 'Edit Jabatan' : 'Tambah Jabatan' }}</h2>
+
+<mat-dialog-content>
+  <form class="dialog-form" [formGroup]="form">
+    <mat-form-field appearance="outline">
+      <mat-label>Kode Jabatan</mat-label>
+      <input matInput formControlName="kodeJabatan" />
+      @if (form.controls.kodeJabatan.hasError('required')) {
+      <mat-error>Kode jabatan wajib diisi</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Nama Jabatan</mat-label>
+      <input matInput formControlName="namaJabatan" />
+      @if (form.controls.namaJabatan.hasError('required')) {
+      <mat-error>Nama jabatan wajib diisi</mat-error>
+      }
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="close()">Batal</button>
+  <button mat-raised-button color="primary" (click)="save()">Simpan</button>
+</mat-dialog-actions>
