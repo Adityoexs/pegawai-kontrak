@@ -1,5 +1,6 @@
+import { HttpClient, HttpEvent, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { Observable } from 'rxjs';
 import {
   ApiResponse,
   Cabang,
@@ -26,12 +27,12 @@ export class ApiService {
     return this.http.post<ApiResponse<Cabang>>(`${this.baseUrl}/cabang`, payload);
   }
 
-  updateCabang(kodeCabang: string, payload: Cabang) {
-    return this.http.put<ApiResponse<Cabang>>(`${this.baseUrl}/cabang/${kodeCabang}`, payload);
+  updateCabang(id: string, payload: Cabang) {
+    return this.http.put<ApiResponse<Cabang>>(`${this.baseUrl}/cabang/${id}`, payload);
   }
 
-  deleteCabang(kodeCabang: string) {
-    return this.http.delete<ApiResponse<void>>(`${this.baseUrl}/cabang/${kodeCabang}`);
+  deleteCabang(id: string) {
+    return this.http.delete<ApiResponse<void>>(`${this.baseUrl}/cabang/${id}`);
   }
 
   getJabatan() {
@@ -42,12 +43,12 @@ export class ApiService {
     return this.http.post<ApiResponse<Jabatan>>(`${this.baseUrl}/jabatan`, payload);
   }
 
-  updateJabatan(kodeJabatan: string, payload: Jabatan) {
-    return this.http.put<ApiResponse<Jabatan>>(`${this.baseUrl}/jabatan/${kodeJabatan}`, payload);
+  updateJabatan(id: string, payload: Jabatan) {
+    return this.http.put<ApiResponse<Jabatan>>(`${this.baseUrl}/jabatan/${id}`, payload);
   }
 
-  deleteJabatan(kodeJabatan: string) {
-    return this.http.delete<ApiResponse<void>>(`${this.baseUrl}/jabatan/${kodeJabatan}`);
+  deleteJabatan(id: string) {
+    return this.http.delete<ApiResponse<void>>(`${this.baseUrl}/jabatan/${id}`);
   }
 
   getPegawai() {
@@ -86,6 +87,16 @@ export class ApiService {
     const formData = new FormData();
     formData.append('file', file);
     return this.http.post<ApiResponse<UploadedFile>>(`${this.baseUrl}/files/upload`, formData);
+  }
+
+  uploadFileWithProgress(file: File): Observable<HttpEvent<ApiResponse<UploadedFile>>> {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    return this.http.post<ApiResponse<UploadedFile>>(`${this.baseUrl}/files/upload`, formData, {
+      observe: 'events',
+      reportProgress: true,
+    });
   }
 
   getFiles() {

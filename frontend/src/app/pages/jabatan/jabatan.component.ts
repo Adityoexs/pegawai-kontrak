@@ -2,14 +2,16 @@ import { Component, OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTableModule } from '@angular/material/table';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { Jabatan } from '../../models/pegawai.model';
 import { ApiService } from '../../services/api.service';
 import { ConfirmDialogComponent } from '../../dialogs/confirm-dialog/confirm-dialog.component';
+import { JabatanDialogComponent } from '../../dialogs/jabatan-dialog/jabatan-dialog.component';
 
 @Component({
   selector: 'app-jabatan',
   standalone: true,
-  imports: [MatButtonModule, MatTableModule, MatDialogModule],
+  imports: [MatButtonModule, MatTableModule, MatDialogModule, MatSnackBarModule],
   templateUrl: './jabatan.component.html',
   styleUrl: './jabatan.component.scss',
 })
@@ -17,27 +19,29 @@ export class JabatanComponent implements OnInit {
   displayedColumns = ['kodeJabatan', 'namaJabatan', 'actions'];
   dataSource: Jabatan[] = [];
 
-  constructor(private readonly apiService: ApiService, private readonly dialog: MatDialog) {}
+  constructor(
+    private readonly apiService: ApiService,
+    private readonly dialog: MatDialog,
+    private readonly snackBar: MatSnackBar
+  ) {}
 
   ngOnInit(): void {
     this.loadData();
   }
 
   loadData(): void {
-    this.apiService.getJabatan().subscribe((res) => (this.dataSource = res.data));
+    this.apiService.getJabatan().subscribe({
+      next: (res) => (this.dataSource = res.data),
+      error: () => this.showError('Gagal memuat data jabatan'),
+    });
   }
 
   add(): void {
-    const kodeJabatan = prompt('Kode Jabatan');
-    const namaJabatan = prompt('Nama Jabatan');
-    if (!kodeJabatan || !namaJabatan) return;
-    this.apiService.createJabatan({ kodeJabatan, namaJabatan }).subscribe(() => this.loadData());
+    this.openFormDialog(false);
   }
 
   edit(item: Jabatan): void {
-    const namaJabatan = prompt('Nama Jabatan', item.namaJabatan);
-    if (!namaJabatan) return;
-    this.apiService.updateJabatan(item.kodeJabatan, { ...item, namaJabatan }).subscribe(() => this.loadData());
+    this.openFormDialog(true, item);
   }
 
   remove(item: Jabatan): void {
@@ -47,7 +51,46 @@ export class JabatanComponent implements OnInit {
       })
       .afterClosed()
       .subscribe((ok) => {
-        if (ok) this.apiService.deleteJabatan(item.kodeJabatan).subscribe(() => this.loadData());
+        if (!ok) return;
+
+        this.apiService.deleteJabatan(item.kodeJabatan).subscribe({
+          next: (res) => {
+            this.showSuccess(res.message || 'Jabatan berhasil dihapus');
+            this.loadData();
+          },
+          error: () => this.showError('Gagal menghapus jabatan'),
+        });
       });
+  }
+
+  private openFormDialog(isEdit: boolean, jabatan?: Jabatan): void {
+    this.dialog
+      .open(JabatanDialogComponent, {
+        data: { isEdit, jabatan },
+      })
+      .afterClosed()
+      .subscribe((payload?: Jabatan) => {
+        if (!payload) return;
+
+        const request$ = isEdit
+          ? this.apiService.updateJabatan(jabatan!.kodeJabatan, payload)
+          : this.apiService.createJabatan(payload);
+
+        request$.subscribe({
+          next: (res) => {
+            this.showSuccess(res.message || `Jabatan berhasil ${isEdit ? 'diupdate' : 'dibuat'}`);
+            this.loadData();
+          },
+          error: () => this.showError(`Gagal ${isEdit ? 'mengupdate' : 'membuat'} jabatan`),
+        });
+      });
+  }
+
+  private showSuccess(message: string): void {
+    this.snackBar.open(message, 'Tutup', { duration: 3000 });
+  }
+
+  private showError(message: string): void {
+    this.snackBar.open(message, 'Tutup', { duration: 3000 });
   }
 }

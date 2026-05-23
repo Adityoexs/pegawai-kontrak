@@ -1,28 +1,30 @@
 <mat-card class="upload-card">
   <mat-card-title>Upload Excel Pegawai</mat-card-title>
   <mat-card-content>
-    <input type="file" accept=".xlsx,.xls" (change)="onFileSelected($event)" />
-    <button mat-raised-button color="primary" (click)="upload()" [disabled]="!selectedFile">Upload</button>
+    <div class="upload-actions">
+      <input #fileInput type="file" hidden accept=".xlsx,.xls" (change)="onFileSelected($event)" />
+      <button mat-stroked-button type="button" (click)="fileInput.click()" [disabled]="isUploading">Pilih File Excel</button>
+      <span class="selected-file">{{ selectedFileName || 'Belum ada file dipilih' }}</span>
+      <button mat-raised-button color="primary" type="button" (click)="upload()" [disabled]="!selectedFile || isUploading">
+        {{ isUploading ? 'Mengupload...' : 'Upload' }}
+      </button>
+    </div>
+
+    @if (isUploading) {
+    <mat-progress-bar mode="determinate" [value]="uploadProgress"></mat-progress-bar>
+    }
   </mat-card-content>
-  @if (errorMessage) {
-  <p class="error">{{ errorMessage }}</p>
-  }
 </mat-card>
 
 <table mat-table [dataSource]="files" class="mat-elevation-z2">
-  <ng-container matColumnDef="id">
-    <th mat-header-cell *matHeaderCellDef>ID</th>
-    <td mat-cell *matCellDef="let row">{{ row.id }}</td>
+  <ng-container matColumnDef="no">
+    <th mat-header-cell *matHeaderCellDef>No</th>
+    <td mat-cell *matCellDef="let row; let i = index">{{ i + 1 }}</td>
   </ng-container>
 
   <ng-container matColumnDef="fileName">
     <th mat-header-cell *matHeaderCellDef>Nama File</th>
     <td mat-cell *matCellDef="let row">{{ row.fileName }}</td>
-  </ng-container>
-
-  <ng-container matColumnDef="filePath">
-    <th mat-header-cell *matHeaderCellDef>Path</th>
-    <td mat-cell *matCellDef="let row">{{ row.filePath }}</td>
   </ng-container>
 
   <ng-container matColumnDef="uploadDate">

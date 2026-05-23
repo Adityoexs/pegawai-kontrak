@@ -1,1 +1,11 @@
-.error { color: #f44336; margin-top: 8px; }
+.upload-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+.selected-file {
+  color: rgba(0, 0, 0, 0.7);
+}

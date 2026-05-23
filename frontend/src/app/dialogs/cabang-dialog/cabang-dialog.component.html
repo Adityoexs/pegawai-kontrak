@@ -1,0 +1,26 @@
+<h2 mat-dialog-title>{{ data.isEdit ? 'Edit Cabang' : 'Tambah Cabang' }}</h2>
+
+<mat-dialog-content>
+  <form class="dialog-form" [formGroup]="form">
+    <mat-form-field appearance="outline">
+      <mat-label>kode_cabang</mat-label>
+      <input matInput formControlName="kodeCabang" />
+      @if (form.controls.kodeCabang.hasError('required')) {
+      <mat-error>Kode cabang wajib diisi</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>nama_cabang</mat-label>
+      <input matInput formControlName="namaCabang" />
+      @if (form.controls.namaCabang.hasError('required')) {
+      <mat-error>Nama cabang wajib diisi</mat-error>
+      }
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="close()">Batal</button>
+  <button mat-raised-button color="primary" (click)="save()">Simpan</button>
+</mat-dialog-actions>
