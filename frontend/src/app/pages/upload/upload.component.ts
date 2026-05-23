@@ -1,49 +1,67 @@
+import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTableModule } from '@angular/material/table';
-import { ApiService } from '../../services/api.service';
 import { UploadedFile } from '../../models/pegawai.model';
+import { ApiService } from '../../services/api.service';
 
 @Component({
   selector: 'app-upload',
   standalone: true,
-  imports: [MatButtonModule, MatCardModule, MatTableModule],
+  imports: [
+    CommonModule,
+    MatButtonModule,
+    MatCardModule,
+    MatIconModule,
+    MatProgressBarModule,
+    MatTableModule,
+  ],
   templateUrl: './upload.component.html',
   styleUrl: './upload.component.scss',
 })
 export class UploadComponent implements OnInit {
-  selectedFile?: File;
+  columns = ['no', 'fileName', 'uploadDate'];
   files: UploadedFile[] = [];
-  errorMessage = '';
-  displayedColumns = ['id', 'fileName', 'filePath', 'uploadDate'];
+  uploading = false;
+  selectedFile: File | null = null;
 
-  constructor(private readonly apiService: ApiService) {}
+  constructor(
+    private readonly api: ApiService,
+    private readonly snack: MatSnackBar
+  ) {}
 
   ngOnInit(): void {
     this.loadFiles();
   }
 
   onFileSelected(event: Event): void {
-    const target = event.target as HTMLInputElement;
-    this.selectedFile = target.files?.[0];
+    const input = event.target as HTMLInputElement;
+    this.selectedFile = input.files?.[0] ?? null;
   }
 
   upload(): void {
     if (!this.selectedFile) return;
-    this.errorMessage = '';
-    this.apiService.uploadFile(this.selectedFile).subscribe({
+
+    this.uploading = true;
+    this.api.uploadFile(this.selectedFile).subscribe({
       next: () => {
-        this.selectedFile = undefined;
+        this.snack.open('File berhasil diunggah & diproses!', 'OK', { duration: 3000 });
+        this.uploading = false;
+        this.selectedFile = null;
         this.loadFiles();
       },
-      error: () => {
-        this.errorMessage = 'Upload gagal. Periksa format file dan coba lagi.';
+      error: (err) => {
+        this.snack.open(`Gagal upload: ${err.error?.message ?? 'Unknown error'}`, 'OK', { duration: 4000 });
+        this.uploading = false;
       },
     });
   }
 
   loadFiles(): void {
-    this.apiService.getFiles().subscribe((res) => (this.files = res.data));
+    this.api.getFiles().subscribe((r) => (this.files = r.data));
   }
 }
