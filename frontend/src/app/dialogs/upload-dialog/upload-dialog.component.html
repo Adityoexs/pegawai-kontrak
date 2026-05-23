@@ -1,0 +1,35 @@
+<h2 mat-dialog-title>Upload File Excel</h2>
+
+<mat-dialog-content>
+  <div class="file-picker-area">
+    <input #fileInput type="file" accept=".xlsx,.xls" (change)="onFileSelected($event)" hidden />
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Pilih File Excel *</mat-label>
+      <input
+        matInput
+        [value]="selectedFile ? selectedFile.name : ''"
+        readonly
+        placeholder="Klik tombol untuk memilih file"
+      />
+      <button mat-icon-button matSuffix type="button" matTooltip="Pilih File" (click)="fileInput.click()">
+        <mat-icon>folder_open</mat-icon>
+      </button>
+    </mat-form-field>
+  </div>
+
+  <p class="hint-text">
+    <span><mat-icon>info</mat-icon> Format: <strong>.xlsx</strong> atau <strong>.xls</strong></span>
+    <span>Kolom: Kode Pegawai | Nama Pegawai | Kode Cabang | Kode Jabatan | Tgl Mulai | Tgl Habis</span>
+  </p>
+
+  <mat-progress-bar *ngIf="uploading" mode="indeterminate"></mat-progress-bar>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="dialogRef.close()" [disabled]="uploading">Batal</button>
+  <button mat-raised-button color="primary" [disabled]="!selectedFile || uploading" (click)="upload()">
+    <mat-spinner *ngIf="uploading" diameter="18"></mat-spinner>
+    {{ uploading ? 'Mengupload...' : 'Upload' }}
+  </button>
+</mat-dialog-actions>
