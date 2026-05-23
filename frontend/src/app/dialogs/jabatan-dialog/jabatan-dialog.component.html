@@ -3,7 +3,7 @@
 <mat-dialog-content>
   <form class="dialog-form" [formGroup]="form">
     <mat-form-field appearance="outline">
-      <mat-label>kode_jabatan</mat-label>
+      <mat-label>Kode Jabatan</mat-label>
       <input matInput formControlName="kodeJabatan" />
       @if (form.controls.kodeJabatan.hasError('required')) {
       <mat-error>Kode jabatan wajib diisi</mat-error>
@@ -11,7 +11,7 @@
     </mat-form-field>
 
     <mat-form-field appearance="outline">
-      <mat-label>nama_jabatan</mat-label>
+      <mat-label>Nama Jabatan</mat-label>
       <input matInput formControlName="namaJabatan" />
       @if (form.controls.namaJabatan.hasError('required')) {
       <mat-error>Nama jabatan wajib diisi</mat-error>
