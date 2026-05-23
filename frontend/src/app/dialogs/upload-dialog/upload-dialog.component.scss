@@ -1,0 +1,70 @@
+:host {
+  display: block;
+}
+
+h2[mat-dialog-title] {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 700;
+  color: #111827;
+}
+
+mat-dialog-content {
+  padding-top: 8px;
+  min-width: 0;
+}
+
+.picker-card {
+  border: 1px solid #d1d5db;
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background: #fff;
+}
+
+.picker-btn {
+  width: fit-content;
+  border-color: #cbd5e1;
+}
+
+.selected-file {
+  margin: 0;
+  font-size: 13px;
+  color: #111827;
+  word-break: break-word;
+}
+
+.muted {
+  color: #6b7280;
+}
+
+.format-hint {
+  margin: 0;
+  font-size: 12px;
+  color: #6b7280;
+  line-height: 1.4;
+}
+
+mat-dialog-actions {
+  padding-top: 8px;
+}
+
+.submit-btn {
+  min-width: 110px;
+  background: #0f1f4a !important;
+  color: #fff !important;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.submit-btn[disabled] {
+  background: #9ca3af !important;
+  color: #fff !important;
+}
+
+mat-spinner {
+  --mdc-circular-progress-active-indicator-color: #fff;
+}

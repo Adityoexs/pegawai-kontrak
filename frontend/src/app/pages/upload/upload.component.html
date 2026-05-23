@@ -1,66 +1,33 @@
 <div class="page-header">
-  <h2><mat-icon>upload_file</mat-icon> Upload File Excel</h2>
+  <h2>📤 Upload Excel</h2>
+  <button mat-raised-button class="upload-btn" (click)="openUploadDialog()">
+    <mat-icon>add</mat-icon>
+    Upload File
+  </button>
 </div>
 
-<mat-card class="upload-card">
-  <mat-card-header>
-    <mat-card-title>Upload Data Pegawai via Excel</mat-card-title>
-    <mat-card-subtitle>
-      Format kolom: Kode Pegawai | Nama Pegawai | Kode Cabang | Kode Jabatan | Tgl Mulai | Tgl Habis
-    </mat-card-subtitle>
-  </mat-card-header>
-
-  <mat-card-content>
-    <div class="upload-area">
-      <input #fileInput type="file" accept=".xlsx,.xls" (change)="onFileSelected($event)" hidden />
-      <button mat-stroked-button color="primary" (click)="fileInput.click()" [disabled]="uploading">
-        <mat-icon>attach_file</mat-icon>
-        {{ selectedFile ? selectedFile.name : 'Pilih File Excel' }}
-      </button>
-      <button mat-raised-button color="primary" [disabled]="!selectedFile || uploading" (click)="upload()">
-        <mat-icon>cloud_upload</mat-icon>
-        {{ uploading ? 'Mengupload...' : 'Upload' }}
-      </button>
-    </div>
-
-    <mat-progress-bar *ngIf="uploading" mode="indeterminate" class="progress"></mat-progress-bar>
-
-    <div *ngIf="selectedFile && !uploading" class="file-info">
-      <mat-icon color="primary">insert_drive_file</mat-icon>
-      <span>{{ selectedFile.name }} ({{ (selectedFile.size / 1024).toFixed(1) }} KB)</span>
-    </div>
-  </mat-card-content>
-</mat-card>
-
-<mat-card>
-  <mat-card-header>
-    <mat-card-title>Riwayat File Upload</mat-card-title>
-  </mat-card-header>
-
+<mat-card class="table-card">
   <mat-card-content>
     <table mat-table [dataSource]="files" class="full-width">
       <ng-container matColumnDef="no">
         <th mat-header-cell *matHeaderCellDef>No</th>
-        <td mat-cell *matCellDef="let f; let i = index">{{ i + 1 }}</td>
+        <td mat-cell *matCellDef="let item; let i = index">{{ i + 1 }}</td>
       </ng-container>
 
       <ng-container matColumnDef="fileName">
         <th mat-header-cell *matHeaderCellDef>Nama File</th>
-        <td mat-cell *matCellDef="let f">
-          <mat-icon class="file-icon">description</mat-icon>
-          {{ f.fileName }}
-        </td>
+        <td mat-cell *matCellDef="let item">{{ item.fileName }}</td>
       </ng-container>
 
       <ng-container matColumnDef="uploadDate">
         <th mat-header-cell *matHeaderCellDef>Tanggal Upload</th>
-        <td mat-cell *matCellDef="let f">{{ f.uploadDate | date: 'dd/MM/yyyy HH:mm' }}</td>
+        <td mat-cell *matCellDef="let item">{{ item.uploadDate | date: 'dd/MM/yyyy HH:mm' }}</td>
       </ng-container>
 
       <tr mat-header-row *matHeaderRowDef="columns"></tr>
       <tr mat-row *matRowDef="let row; columns: columns"></tr>
     </table>
 
-    <p *ngIf="files.length === 0" class="empty-state">Belum ada file yang diupload.</p>
+    <p *ngIf="files.length === 0" class="empty-state">Belum ada riwayat upload file.</p>
   </mat-card-content>
 </mat-card>

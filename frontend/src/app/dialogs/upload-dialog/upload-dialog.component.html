@@ -1,0 +1,29 @@
+<h2 mat-dialog-title>Upload File Excel</h2>
+
+<mat-dialog-content>
+  <div class="picker-card">
+    <input #fileInput type="file" accept=".xlsx,.xls" hidden (change)="onFileSelected($event)" />
+
+    <button mat-stroked-button class="picker-btn" (click)="fileInput.click()" [disabled]="uploading">
+      <mat-icon>upload_file</mat-icon>
+      Pilih File Excel
+    </button>
+
+    <p class="selected-file" *ngIf="selectedFile">{{ selectedFile.name }}</p>
+    <p class="selected-file muted" *ngIf="!selectedFile">Belum ada file dipilih</p>
+
+    <p class="format-hint">
+      Format: .xlsx atau .xls | Kolom: Kode Pegawai, Nama, Kode Cabang, Kode Jabatan, Tgl Mulai, Tgl Habis
+    </p>
+
+    <mat-progress-bar *ngIf="uploading" mode="indeterminate"></mat-progress-bar>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="dialogRef.close()" [disabled]="uploading">Batal</button>
+  <button mat-raised-button class="submit-btn" (click)="upload()" [disabled]="!selectedFile || uploading">
+    <mat-spinner *ngIf="uploading" diameter="18"></mat-spinner>
+    <span>{{ uploading ? 'Mengunggah...' : 'Upload' }}</span>
+  </button>
+</mat-dialog-actions>
