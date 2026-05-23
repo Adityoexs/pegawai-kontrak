@@ -1,18 +1,26 @@
 <mat-card class="upload-card">
   <mat-card-title>Upload Excel Pegawai</mat-card-title>
   <mat-card-content>
-    <input type="file" accept=".xlsx,.xls" (change)="onFileSelected($event)" />
-    <button mat-raised-button color="primary" (click)="upload()" [disabled]="!selectedFile">Upload</button>
+    <div class="upload-actions">
+      <input #fileInput type="file" accept=".xlsx,.xls" (change)="onFileSelected($event)" hidden />
+      <button mat-stroked-button type="button" (click)="fileInput.click()">Pilih File Excel</button>
+      <span class="selected-file">{{ selectedFile?.name || 'Belum ada file dipilih' }}</span>
+      <button mat-raised-button color="primary" type="button" (click)="upload()" [disabled]="!selectedFile || isUploading">
+        {{ isUploading ? 'Uploading...' : 'Upload' }}
+      </button>
+    </div>
+
+    @if (isUploading) {
+    <mat-progress-bar mode="determinate" [value]="uploadProgress"></mat-progress-bar>
+    }
   </mat-card-content>
-  @if (errorMessage) {
-  <p class="error">{{ errorMessage }}</p>
-  }
 </mat-card>
 
-<table mat-table [dataSource]="files" class="mat-elevation-z2">
-  <ng-container matColumnDef="id">
-    <th mat-header-cell *matHeaderCellDef>ID</th>
-    <td mat-cell *matCellDef="let row">{{ row.id }}</td>
+<h3>Riwayat Upload Berhasil</h3>
+<table mat-table [dataSource]="files" class="mat-elevation-z2 data-table">
+  <ng-container matColumnDef="no">
+    <th mat-header-cell *matHeaderCellDef>No</th>
+    <td mat-cell *matCellDef="let row">{{ getRowNumber(row) }}</td>
   </ng-container>
 
   <ng-container matColumnDef="fileName">
@@ -20,16 +28,14 @@
     <td mat-cell *matCellDef="let row">{{ row.fileName }}</td>
   </ng-container>
 
-  <ng-container matColumnDef="filePath">
-    <th mat-header-cell *matHeaderCellDef>Path</th>
-    <td mat-cell *matCellDef="let row">{{ row.filePath }}</td>
-  </ng-container>
-
   <ng-container matColumnDef="uploadDate">
     <th mat-header-cell *matHeaderCellDef>Tanggal Upload</th>
-    <td mat-cell *matCellDef="let row">{{ row.uploadDate }}</td>
+    <td mat-cell *matCellDef="let row">{{ row.uploadDate | date : 'dd/MM/yyyy HH:mm' }}</td>
   </ng-container>
 
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
   <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  <tr class="mat-row" *matNoDataRow>
+    <td class="mat-cell" [attr.colspan]="displayedColumns.length">Belum ada riwayat upload berhasil.</td>
+  </tr>
 </table>

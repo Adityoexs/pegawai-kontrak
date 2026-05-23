@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpEvent, HttpParams } from '@angular/common/http';
+import { Observable } from 'rxjs';
 import {
   ApiResponse,
   Cabang,
@@ -82,10 +83,13 @@ export class ApiService {
     });
   }
 
-  uploadFile(file: File) {
+  uploadFile(file: File): Observable<HttpEvent<ApiResponse<UploadedFile>>> {
     const formData = new FormData();
     formData.append('file', file);
-    return this.http.post<ApiResponse<UploadedFile>>(`${this.baseUrl}/files/upload`, formData);
+    return this.http.post<ApiResponse<UploadedFile>>(`${this.baseUrl}/files/upload`, formData, {
+      reportProgress: true,
+      observe: 'events',
+    });
   }
 
   getFiles() {

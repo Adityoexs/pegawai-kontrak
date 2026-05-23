@@ -1,0 +1,18 @@
+:host {
+  display: block;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.data-table {
+  width: 100%;
+}
+
+.action-cell {
+  white-space: nowrap;
+}

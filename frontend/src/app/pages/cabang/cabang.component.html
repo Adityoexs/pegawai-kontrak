@@ -1,11 +1,11 @@
 <div class="page-header">
   <h2>Data Cabang</h2>
-  <button mat-raised-button color="primary" (click)="add()">Tambah</button>
+  <button mat-raised-button color="primary" (click)="add()">Tambah Cabang</button>
 </div>
 
-<table mat-table [dataSource]="dataSource" class="mat-elevation-z2">
+<table mat-table [dataSource]="dataSource" class="mat-elevation-z2 data-table">
   <ng-container matColumnDef="kodeCabang">
-    <th mat-header-cell *matHeaderCellDef>Kode</th>
+    <th mat-header-cell *matHeaderCellDef>Kode Cabang</th>
     <td mat-cell *matCellDef="let row">{{ row.kodeCabang }}</td>
   </ng-container>
 
@@ -16,12 +16,15 @@
 
   <ng-container matColumnDef="actions">
     <th mat-header-cell *matHeaderCellDef>Aksi</th>
-    <td mat-cell *matCellDef="let row">
-      <button mat-button (click)="edit(row)">Edit</button>
+    <td mat-cell *matCellDef="let row" class="action-cell">
+      <button mat-button color="primary" (click)="edit(row)">Edit</button>
       <button mat-button color="warn" (click)="remove(row)">Hapus</button>
     </td>
   </ng-container>
 
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
   <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  <tr class="mat-row" *matNoDataRow>
+    <td class="mat-cell" [attr.colspan]="displayedColumns.length">Belum ada data cabang.</td>
+  </tr>
 </table>
