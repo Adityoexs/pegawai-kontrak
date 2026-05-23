@@ -53,13 +53,13 @@ export class CabangDialogComponent implements OnInit {
     if (this.form.invalid) return;
 
     const value = this.form.getRawValue() as Cabang;
-    const request$ = this.isEdit
-      ? this.api.updateCabang(this.data!.kodeCabang, value)
+    const request$ = this.data
+      ? this.api.updateCabang(this.data.kodeCabang, value)
       : this.api.createCabang(value);
 
     request$.subscribe({
       next: () => {
-        this.snack.open(this.isEdit ? 'Cabang berhasil diupdate' : 'Cabang berhasil ditambah', 'OK', {
+        this.snack.open(this.isEdit ? 'Cabang berhasil diperbarui' : 'Cabang berhasil ditambahkan', 'OK', {
           duration: 2000,
         });
         this.dialogRef.close(true);

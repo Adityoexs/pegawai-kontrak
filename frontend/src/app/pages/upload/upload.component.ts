@@ -49,7 +49,7 @@ export class UploadComponent implements OnInit {
     this.uploading = true;
     this.api.uploadFile(this.selectedFile).subscribe({
       next: () => {
-        this.snack.open('File berhasil diupload & diproses!', 'OK', { duration: 3000 });
+        this.snack.open('File berhasil diunggah & diproses!', 'OK', { duration: 3000 });
         this.uploading = false;
         this.selectedFile = null;
         this.loadFiles();

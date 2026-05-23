@@ -53,13 +53,13 @@ export class JabatanDialogComponent implements OnInit {
     if (this.form.invalid) return;
 
     const value = this.form.getRawValue() as Jabatan;
-    const request$ = this.isEdit
-      ? this.api.updateJabatan(this.data!.kodeJabatan, value)
+    const request$ = this.data
+      ? this.api.updateJabatan(this.data.kodeJabatan, value)
       : this.api.createJabatan(value);
 
     request$.subscribe({
       next: () => {
-        this.snack.open(this.isEdit ? 'Jabatan berhasil diupdate' : 'Jabatan berhasil ditambah', 'OK', {
+        this.snack.open(this.isEdit ? 'Jabatan berhasil diperbarui' : 'Jabatan berhasil ditambahkan', 'OK', {
           duration: 2000,
         });
         this.dialogRef.close(true);
