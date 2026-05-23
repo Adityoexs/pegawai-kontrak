@@ -1,53 +1,74 @@
+import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
-import { MatTableModule } from '@angular/material/table';
+import { MatCardModule } from '@angular/material/card';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MatIconModule } from '@angular/material/icon';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatTableModule } from '@angular/material/table';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { ConfirmDialogComponent } from '../../dialogs/confirm-dialog/confirm-dialog.component';
+import { CabangDialogComponent } from '../../dialogs/cabang-dialog/cabang-dialog.component';
 import { Cabang } from '../../models/pegawai.model';
 import { ApiService } from '../../services/api.service';
-import { ConfirmDialogComponent } from '../../dialogs/confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-cabang',
   standalone: true,
-  imports: [MatButtonModule, MatTableModule, MatDialogModule],
+  imports: [
+    CommonModule,
+    MatButtonModule,
+    MatCardModule,
+    MatDialogModule,
+    MatIconModule,
+    MatTableModule,
+    MatTooltipModule,
+  ],
   templateUrl: './cabang.component.html',
   styleUrl: './cabang.component.scss',
 })
 export class CabangComponent implements OnInit {
-  displayedColumns = ['kodeCabang', 'namaCabang', 'actions'];
+  columns = ['no', 'kodeCabang', 'namaCabang', 'aksi'];
   dataSource: Cabang[] = [];
 
-  constructor(private readonly apiService: ApiService, private readonly dialog: MatDialog) {}
+  constructor(
+    private readonly api: ApiService,
+    private readonly dialog: MatDialog,
+    private readonly snack: MatSnackBar
+  ) {}
 
   ngOnInit(): void {
-    this.loadData();
+    this.load();
   }
 
-  loadData(): void {
-    this.apiService.getCabang().subscribe((res) => (this.dataSource = res.data));
+  load(): void {
+    this.api.getCabang().subscribe((r) => (this.dataSource = r.data));
   }
 
-  add(): void {
-    const kodeCabang = prompt('Kode Cabang');
-    const namaCabang = prompt('Nama Cabang');
-    if (!kodeCabang || !namaCabang) return;
-    this.apiService.createCabang({ kodeCabang, namaCabang }).subscribe(() => this.loadData());
+  openForm(cabang?: Cabang): void {
+    const ref = this.dialog.open(CabangDialogComponent, {
+      width: '400px',
+      data: cabang ?? null,
+    });
+    ref.afterClosed().subscribe((res) => {
+      if (res) this.load();
+    });
   }
 
-  edit(item: Cabang): void {
-    const namaCabang = prompt('Nama Cabang', item.namaCabang);
-    if (!namaCabang) return;
-    this.apiService.updateCabang(item.kodeCabang, { ...item, namaCabang }).subscribe(() => this.loadData());
-  }
+  delete(cabang: Cabang): void {
+    const ref = this.dialog.open(ConfirmDialogComponent, {
+      data: { title: 'Hapus Cabang', message: `Hapus cabang "${cabang.namaCabang}"?` },
+    });
 
-  remove(item: Cabang): void {
-    this.dialog
-      .open(ConfirmDialogComponent, {
-        data: { title: 'Hapus Cabang', message: `Hapus cabang ${item.namaCabang}?` },
-      })
-      .afterClosed()
-      .subscribe((ok) => {
-        if (ok) this.apiService.deleteCabang(item.kodeCabang).subscribe(() => this.loadData());
+    ref.afterClosed().subscribe((ok) => {
+      if (!ok) return;
+      this.api.deleteCabang(cabang.kodeCabang).subscribe({
+        next: () => {
+          this.snack.open('Cabang berhasil dihapus', 'OK', { duration: 2000 });
+          this.load();
+        },
+        error: () => this.snack.open('Gagal menghapus cabang', 'OK', { duration: 2000 }),
       });
+    });
   }
 }
