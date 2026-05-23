@@ -77,16 +77,28 @@ export class JabatanComponent implements OnInit {
           return;
         }
 
-        const request$ = isEdit
-          ? this.apiService.updateJabatan(jabatan!.kodeJabatan, payload)
-          : this.apiService.createJabatan(payload);
+        if (isEdit) {
+          if (!jabatan) {
+            this.showError('Data jabatan tidak ditemukan');
+            return;
+          }
 
-        request$.subscribe({
+          this.apiService.updateJabatan(jabatan.kodeJabatan, payload).subscribe({
+            next: () => {
+              this.showSuccess('Jabatan berhasil diperbarui');
+              this.loadData();
+            },
+            error: () => this.showError('Gagal memperbarui jabatan'),
+          });
+          return;
+        }
+
+        this.apiService.createJabatan(payload).subscribe({
           next: () => {
-            this.showSuccess(isEdit ? 'Jabatan berhasil diperbarui' : 'Jabatan berhasil ditambahkan');
+            this.showSuccess('Jabatan berhasil ditambahkan');
             this.loadData();
           },
-          error: () => this.showError(isEdit ? 'Gagal memperbarui jabatan' : 'Gagal menambah jabatan'),
+          error: () => this.showError('Gagal menambah jabatan'),
         });
       });
   }

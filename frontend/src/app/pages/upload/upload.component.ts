@@ -82,10 +82,6 @@ export class UploadComponent implements OnInit {
     });
   }
 
-  getRowNumber(row: UploadedFile): number {
-    return this.files.findIndex((item) => item.id === row.id) + 1;
-  }
-
   private showSuccess(message: string): void {
     this.snackBar.open(message, 'Tutup', { duration: 3000 });
   }

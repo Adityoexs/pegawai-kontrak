@@ -26,9 +26,17 @@ import { Cabang } from '../../models/pegawai.model';
   ],
 })
 export class CabangDialogComponent {
-  form = this.fb.group({
-    kodeCabang: ['', Validators.required],
-    namaCabang: ['', Validators.required],
+  private static readonly NO_LEADING_TRAILING_WHITESPACE_PATTERN = /^\S(?:.*\S)?$/;
+
+  form = this.fb.nonNullable.group({
+    kodeCabang: [
+      '',
+      [Validators.required, Validators.pattern(CabangDialogComponent.NO_LEADING_TRAILING_WHITESPACE_PATTERN)],
+    ],
+    namaCabang: [
+      '',
+      [Validators.required, Validators.pattern(CabangDialogComponent.NO_LEADING_TRAILING_WHITESPACE_PATTERN)],
+    ],
   });
 
   constructor(
@@ -56,8 +64,8 @@ export class CabangDialogComponent {
 
     const raw = this.form.getRawValue();
     const payload: Cabang = {
-      kodeCabang: raw.kodeCabang || '',
-      namaCabang: raw.namaCabang || '',
+      kodeCabang: raw.kodeCabang.trim(),
+      namaCabang: raw.namaCabang.trim(),
     };
 
     this.dialogRef.close(payload);

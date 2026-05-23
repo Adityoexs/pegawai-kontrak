@@ -26,9 +26,17 @@ import { Jabatan } from '../../models/pegawai.model';
   ],
 })
 export class JabatanDialogComponent {
-  form = this.fb.group({
-    kodeJabatan: ['', Validators.required],
-    namaJabatan: ['', Validators.required],
+  private static readonly NO_LEADING_TRAILING_WHITESPACE_PATTERN = /^\S(?:.*\S)?$/;
+
+  form = this.fb.nonNullable.group({
+    kodeJabatan: [
+      '',
+      [Validators.required, Validators.pattern(JabatanDialogComponent.NO_LEADING_TRAILING_WHITESPACE_PATTERN)],
+    ],
+    namaJabatan: [
+      '',
+      [Validators.required, Validators.pattern(JabatanDialogComponent.NO_LEADING_TRAILING_WHITESPACE_PATTERN)],
+    ],
   });
 
   constructor(
@@ -56,8 +64,8 @@ export class JabatanDialogComponent {
 
     const raw = this.form.getRawValue();
     const payload: Jabatan = {
-      kodeJabatan: raw.kodeJabatan || '',
-      namaJabatan: raw.namaJabatan || '',
+      kodeJabatan: raw.kodeJabatan.trim(),
+      namaJabatan: raw.namaJabatan.trim(),
     };
 
     this.dialogRef.close(payload);

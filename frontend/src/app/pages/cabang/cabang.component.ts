@@ -77,16 +77,28 @@ export class CabangComponent implements OnInit {
           return;
         }
 
-        const request$ = isEdit
-          ? this.apiService.updateCabang(cabang!.kodeCabang, payload)
-          : this.apiService.createCabang(payload);
+        if (isEdit) {
+          if (!cabang) {
+            this.showError('Data cabang tidak ditemukan');
+            return;
+          }
 
-        request$.subscribe({
+          this.apiService.updateCabang(cabang.kodeCabang, payload).subscribe({
+            next: () => {
+              this.showSuccess('Cabang berhasil diperbarui');
+              this.loadData();
+            },
+            error: () => this.showError('Gagal memperbarui cabang'),
+          });
+          return;
+        }
+
+        this.apiService.createCabang(payload).subscribe({
           next: () => {
-            this.showSuccess(isEdit ? 'Cabang berhasil diperbarui' : 'Cabang berhasil ditambahkan');
+            this.showSuccess('Cabang berhasil ditambahkan');
             this.loadData();
           },
-          error: () => this.showError(isEdit ? 'Gagal memperbarui cabang' : 'Gagal menambah cabang'),
+          error: () => this.showError('Gagal menambah cabang'),
         });
       });
   }
