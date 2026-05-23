@@ -1,58 +1,41 @@
 .page-header {
   display: flex;
+  justify-content: space-between;
   align-items: center;
+  gap: 12px;
   margin-bottom: 16px;
 
   h2 {
-    display: flex;
-    align-items: center;
-    gap: 8px;
     margin: 0;
+    font-weight: 700;
+    color: #1f2937;
   }
 }
 
-.upload-card {
-  margin-bottom: 16px;
+.upload-btn {
+  background: #0f1f4a !important;
+  color: #fff !important;
+
+  mat-icon {
+    margin-right: 4px;
+  }
 }
 
-.upload-area {
-  display: flex;
-  gap: 12px;
-  align-items: center;
-  flex-wrap: wrap;
-  margin: 16px 0 8px;
-}
-
-.progress {
-  margin-top: 8px;
-}
-
-.file-info {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  color: #555;
-  font-size: 13px;
-  margin-top: 4px;
-}
-
-.file-icon {
-  vertical-align: middle;
-  color: green;
-  margin-right: 4px;
+.table-card {
+  border-radius: 12px;
 }
 
 .full-width {
   width: 100%;
 }
 
+th.mat-mdc-header-cell {
+  font-weight: 700;
+  background: #f3f4f6;
+}
+
 .empty-state {
   text-align: center;
   padding: 24px;
-  color: #999;
-}
-
-th.mat-mdc-header-cell {
-  font-weight: 700;
-  background: #f0f0f0;
+  color: #9ca3af;
 }
