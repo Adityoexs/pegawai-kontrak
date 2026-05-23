@@ -1,1 +1,58 @@
-.error { color: #f44336; margin-top: 8px; }
+.page-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+
+  h2 {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
+  }
+}
+
+.upload-card {
+  margin-bottom: 16px;
+}
+
+.upload-area {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin: 16px 0 8px;
+}
+
+.progress {
+  margin-top: 8px;
+}
+
+.file-info {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: #555;
+  font-size: 13px;
+  margin-top: 4px;
+}
+
+.file-icon {
+  vertical-align: middle;
+  color: green;
+  margin-right: 4px;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 24px;
+  color: #999;
+}
+
+th.mat-mdc-header-cell {
+  font-weight: 700;
+  background: #f0f0f0;
+}
